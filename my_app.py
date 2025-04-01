@@ -133,7 +133,7 @@ class StartUp(object):
   Waits for a switch to connect and makes it a BalanceSwitch (giving connection to itself as param)
   """
 
-  def __init__(self, transparent, ignore=None):
+  def __init__(self):
     """
     Initialize
     """
