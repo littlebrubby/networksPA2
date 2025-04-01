@@ -92,6 +92,7 @@ class BalanceSwitch (object):
               msg.match.dl_type = 0x800
               msg.match.nw_dst = a.protosrc
               msg.actions.append(of.ofp_action_output(port=inport))
+              msg.actions.append(of.ofp_action_nw_addr.set_dst(IPAddr("10.0.0." + str(self.next_host))))
               self.connection.send(msg)
 
               # switch to next host
