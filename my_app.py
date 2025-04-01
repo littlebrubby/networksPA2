@@ -114,6 +114,7 @@ class BalanceSwitch (object):
               msg.match.nw_dst = IPAddr("10.0.0.10")
               msg.actions.append(of.ofp_action_output(port=self.next_host))
               msg.actions.append(of.ofp_action_nw_addr.set_dst(IPAddr("10.0.0." + str(self.next_host))))
+              msg.actions.append(of.ofp_action_dl_addr.set_dst(EthAddr("00:00:00:00:00:0" + str(self.next_host))))
               self.connection.send(msg)
 
               log.info("connecting %s and %s" % (str(a.protosrc),
@@ -124,6 +125,7 @@ class BalanceSwitch (object):
               msg.match.nw_dst = a.protosrc
               msg.actions.append(of.ofp_action_output(port=inport))
               msg.actions.append(of.ofp_action_nw_addr.set_src(IPAddr("10.0.0." + str(self.next_host))))
+              msg.actions.append(of.ofp_action_dl_addr.set_src(EthAddr("00:00:00:00:00:0" + str(self.next_host))))
               self.connection.send(msg)
 
               r = arp()
