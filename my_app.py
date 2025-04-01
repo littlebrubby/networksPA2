@@ -84,11 +84,11 @@ class BalanceSwitch (object):
                 r.protolen = a.protolen
                 r.opcode = arp.REPLY
                 r.hwdst = a.hwsrc
-                r.hwsrc = EthAddr("00:00:00:00:00:0" + str(a.protosrc)[-1])
+                r.hwsrc = EthAddr("00:00:00:00:00:0" + str(a.protodst)[-1])
                 r.protodst = a.protosrc
                 r.protosrc = a.protodst
 
-                e = ethernet(type=ethernet.ARP_TYPE, src=EthAddr("00:00:00:00:00:0" + str(a.protosrc)[-1]),
+                e = ethernet(type=ethernet.ARP_TYPE, src=EthAddr("00:00:00:00:00:0" + str(a.protodst)[-1]),
                              dst=packet.src)
                 e.payload = r
                 if packet.type == ethernet.VLAN_TYPE:
