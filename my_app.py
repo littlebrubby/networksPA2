@@ -88,7 +88,7 @@ class BalanceSwitch (object):
               msg.priority = 42
               msg.match.in_port = self.next_host
               msg.match.dl_type = 0x800
-              msg.match.nw_dst = packet.src
+              msg.match.nw_src = a.protosrc
               msg.actions.append(of.ofp_action_output(port=inport))
               self.connection.send(msg)
 
