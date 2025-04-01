@@ -128,7 +128,7 @@ class BalanceSwitch (object):
 
 
 
-class startUp(object):
+class StartUp(object):
   """
   Waits for a switch to connect and makes it a BalanceSwitch (giving connection to itself as param)
   """
@@ -176,4 +176,4 @@ def launch ():
   # 3. True if this is the last instance, False otherwise
   # The last is just a comparison between #1 and #2, but is convenient.
 
-  core.registerNew(BalanceSwitch)
+  core.registerNew(StartUp)
