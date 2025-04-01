@@ -77,18 +77,17 @@ class BalanceSwitch (object):
           if a.protosrc != 0:
             if a.opcode == arp.REQUEST:
               msg = of.ofp_flow_mod()
-              msg.priority = 42
               msg.match.in_port = inport
               msg.match.dl_type = 0x800
               msg.match.nw_dst = IPAddr("10.0.0.10")
               msg.actions.append(of.ofp_action_output(port=self.next_host))
+              msg.actions.append(of.ofp_action_nw_addr.set_dst(IPAddr("10.0.0." + str(self.next_host))))
               self.connection.send(msg)
 
               log.info("connecting %s and %s" % (str(a.protosrc),
                                                     str(msg.match.nw_dst)))
               log.info(str(msg))
               msg = of.ofp_flow_mod()
-              msg.priority = 42
               msg.match.in_port = self.next_host
               msg.match.dl_type = 0x800
               msg.match.nw_dst = a.protosrc
