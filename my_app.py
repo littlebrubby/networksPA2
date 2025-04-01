@@ -60,6 +60,7 @@ class BalanceSwitch (object):
     log.info("packet received")
     dpid = event.connection.dpid
     inport = event.port
+    log.info("inport: " + str(inport))
     packet = event.parsed
     if not packet.parsed:
       log.warning("%s: ignoring unparsed packet", dpid_to_str(dpid))
