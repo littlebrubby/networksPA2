@@ -76,6 +76,38 @@ class BalanceSwitch (object):
         if a.hwtype == arp.HW_TYPE_ETHERNET:
           if a.protosrc != 0:
             if a.opcode == arp.REQUEST:
+              if a.protosrc == IPAddr("10.0.0.5") or a.protosrc == IPAddr("10.0.0.6"):
+                r = arp()
+                r.hwtype = a.hwtype
+                r.prototype = a.prototype
+                r.hwlen = a.hwlen
+                r.protolen = a.protolen
+                r.opcode = arp.REPLY
+                r.hwdst = a.hwsrc
+                r.hwsrc = EthAddr("00:00:00:00:00:0" + str(a.protosrc)[-1])
+                r.protodst = a.protosrc
+                r.protosrc = a.protodst
+
+                e = ethernet(type=ethernet.ARP_TYPE, src=EthAddr("00:00:00:00:00:0" + str(a.protosrc)[-1]),
+                             dst=packet.src)
+                e.payload = r
+                if packet.type == ethernet.VLAN_TYPE:
+                  v_rcv = packet.find('vlan')
+                  e.payload = vlan(eth_type=e.type,
+                                   payload=e.payload,
+                                   id=v_rcv.id,
+                                   pcp=v_rcv.pcp)
+                  e.type = ethernet.VLAN_TYPE
+                log.info("%s answering ARP for %s" % (dpid_to_str(dpid),
+                                                      str(r.protosrc)))
+                msg = of.ofp_packet_out()
+                msg.data = e.pack()
+
+                msg.in_port = inport
+                msg.actions.append(of.ofp_action_output(port=
+                                                        of.OFPP_IN_PORT))
+                event.connection.send(msg)
+                return
               msg = of.ofp_flow_mod()
               msg.match.in_port = inport
               msg.match.dl_type = 0x800
