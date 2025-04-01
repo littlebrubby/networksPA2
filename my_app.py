@@ -144,7 +144,7 @@ class startUp(object):
     BalanceSwitch(event.connection)
 
 @poxutil.eval_args
-def launch (foo, bar = False):
+def launch ():
   """
   The default launcher just logs its arguments
   """
@@ -175,8 +175,5 @@ def launch (foo, bar = False):
   # 2. The total number of instances for this module
   # 3. True if this is the last instance, False otherwise
   # The last is just a comparison between #1 and #2, but is convenient.
-
-  log.warn("Foo: %s (%s)", foo, type(foo))
-  log.warn("Bar: %s (%s)", bar, type(bar))
 
   core.registerNew(BalanceSwitch)
