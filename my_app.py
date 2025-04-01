@@ -50,6 +50,7 @@ class BalanceSwitch (object):
   def __init__(self, connection):
     self.connection = connection
     self.next_host = 5
+    core.openflow.addListeners(self)
     core.addListeners(self)
 
   #def _handle_GoingUpEvent(self, event):
@@ -140,11 +141,12 @@ class StartUp(object):
     core.openflow.addListeners(self)
 
   def _handle_ConnectionUp(self, event):
-    log.debug("Connection %s" % (event.connection,))
+    log.info("Connection %s" % (event.connection,))
     BalanceSwitch(event.connection)
 
 @poxutil.eval_args
 def launch ():
+  log.debug("hello")
   """
   The default launcher just logs its arguments
   """
