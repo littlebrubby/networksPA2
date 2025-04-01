@@ -57,6 +57,7 @@ class BalanceSwitch (object):
     #core.openflow.addListeners(self)
 
   def _handle_PacketIn(self, event):
+    log.info("packet received")
     dpid = event.connection.dpid
     inport = event.port
     packet = event.parsed
@@ -146,7 +147,7 @@ class StartUp(object):
 
 @poxutil.eval_args
 def launch ():
-  log.debug("hello")
+  log.info("hello")
   """
   The default launcher just logs its arguments
   """
