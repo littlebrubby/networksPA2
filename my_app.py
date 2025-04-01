@@ -86,6 +86,7 @@ class BalanceSwitch (object):
 
               log.info("connecting %s and %s" % (str(a.protosrc),
                                                     str(msg.match.nw_dst)))
+              log.info(str(msg))
               msg = of.ofp_flow_mod()
               msg.priority = 42
               msg.match.in_port = self.next_host
