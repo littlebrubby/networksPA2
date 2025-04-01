@@ -110,7 +110,7 @@ class BalanceSwitch (object):
                 return
               msg = of.ofp_flow_mod()
               msg.match.in_port = inport
-              msg.match.dl_type = 0x800
+              #msg.match.dl_type = 0x800
               msg.match.nw_dst = IPAddr("10.0.0.10")
               msg.actions.append(of.ofp_action_output(port=self.next_host))
               msg.actions.append(of.ofp_action_nw_addr.set_dst(IPAddr("10.0.0." + str(self.next_host))))
@@ -121,7 +121,7 @@ class BalanceSwitch (object):
                                                     str(msg.match.nw_dst)))
               msg = of.ofp_flow_mod()
               msg.match.in_port = self.next_host
-              msg.match.dl_type = 0x800
+              #msg.match.dl_type = 0x800
               msg.match.nw_dst = a.protosrc
               msg.actions.append(of.ofp_action_output(port=inport))
               msg.actions.append(of.ofp_action_nw_addr.set_src(IPAddr("10.0.0." + str(self.next_host))))
