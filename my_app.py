@@ -95,12 +95,6 @@ class BalanceSwitch (object):
               msg.actions.append(of.ofp_action_nw_addr.set_dst(IPAddr("10.0.0." + str(self.next_host))))
               self.connection.send(msg)
 
-              # switch to next host
-              if self.next_host == 5:
-                self.next_host = 6
-              else:
-                self.next_host = 5
-
               r = arp()
               r.hwtype = a.hwtype
               r.prototype = a.prototype
@@ -108,12 +102,12 @@ class BalanceSwitch (object):
               r.protolen = a.protolen
               r.opcode = arp.REPLY
               r.hwdst = a.hwsrc
-              r.hwsrc = IPAddr("10.0.0." + str(self.next_host))
+              r.hwsrc = EthAddr("00:00:00:00:00:0" + str(self.next_host))
               r.protodst = a.protosrc
               r.protosrc = a.protodst
 
-              e = ethernet(type=packet.type, src=event.connection.eth_addr,
-                           dst=a.hwsrc)
+              e = ethernet(type=ethernet.ARP_TYPE, src=EthAddr("00:00:00:00:00:0" + str(self.next_host)),
+                           dst=packet.src)
               e.payload = r
               if packet.type == ethernet.VLAN_TYPE:
                 v_rcv = packet.find('vlan')
@@ -126,11 +120,18 @@ class BalanceSwitch (object):
                                                     str(r.protosrc)))
               msg = of.ofp_packet_out()
               msg.data = e.pack()
+
               msg.in_port = inport
               msg.actions.append(of.ofp_action_output(port=
                                                       of.OFPP_IN_PORT))
 
               event.connection.send(msg)
+
+              # switch to next host
+              if self.next_host == 5:
+                self.next_host = 6
+              else:
+                self.next_host = 5
 
 
 
