@@ -52,7 +52,7 @@ class BalanceSwitch (object):
     self.next_host = 5
     core.addListeners(self)
 
-  def _handle_GoingUpEvent(self, event):
+  #def _handle_GoingUpEvent(self, event):
     #core.openflow.addListeners(self)
 
   def _handle_PacketIn(self, event):
